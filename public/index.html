@@ -5,22 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Desenho Assinado</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
   <main>
     <header>
       <h1>Desenho Assinado</h1>
-      <p>Escolha um número entre 1 e 100. Cada número gera uma figura diferente, assinada com o seu e-mail.</p>
+      <p>Entre com sua conta Google e escolha um número entre 1 e 100. Cada número gera uma figura diferente, assinada com o seu e-mail verificado.</p>
     </header>
+
+    <div id="g_id_onload"
+      data-client_id="1044149237889-es0l706roash7823827f6jsemtqoh0ij.apps.googleusercontent.com"
+      data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin"
+      data-type="standard"
+      data-size="large"
+      data-theme="outline">
+    </div>
 
     <form id="formulario" novalidate>
       <label for="numero">Número</label>
       <input id="numero" name="numero" type="number" min="1" max="100" step="1" required placeholder="42">
 
-      <label for="email">E-mail</label>
-      <input id="email" name="email" type="email" required placeholder="voce@gmail.com">
-
-      <button type="submit">Desenhar</button>
+      <button type="submit" id="botao-desenhar" disabled>Desenhar</button>
     </form>
 
     <p id="mensagem" role="alert"></p>
@@ -29,6 +37,22 @@
 
     <button id="baixar" type="button" hidden>Baixar SVG</button>
   </main>
+
+  <script>
+    window.googleIdToken = null;
+
+    function handleCredentialResponse(response) {
+      window.googleIdToken = response.credential;
+      const botao = document.getElementById("botao-desenhar");
+      if (botao) {
+        botao.disabled = false;
+      }
+      const mensagem = document.getElementById("mensagem");
+      if (mensagem) {
+        mensagem.textContent = "";
+      }
+    }
+  </script>
 
   <script type="module" src="script.js"></script>
 </body>
