@@ -22,6 +22,6 @@ Framework preset: `None`. Build command: vazio. Build output directory: `public`
 
 ## Identificação (preencha após o fork)
 
-Nome: 
-RA: 
-URL: https://
+Nome: Guilherme Hiroshi Bansho
+RA: 2026109272
+URL: https://2bim-avalia1-d9d.pages.dev
