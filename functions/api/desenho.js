@@ -1,7 +1,13 @@
 import { gerarDesenho, numeroValido } from "../../lib/desenho.js";
 
-export async function onRequestPost(context) {
-  // 1. Validar o corpo (400)
+export async function onRequest(context) {
+  if (context.request.method !== "POST") {
+    return new Response("Method Not Allowed", {
+      status: 405,
+      headers: { Allow: "POST", "Cache-Control": "no-store" }
+    });
+  }
+
   let corpo;
   try {
     corpo = await context.request.json();
@@ -21,7 +27,6 @@ export async function onRequestPost(context) {
     });
   }
 
-  // 2. Validar o token (401)
   const authHeader = context.request.headers.get("Authorization");
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -77,7 +82,6 @@ export async function onRequestPost(context) {
 
   const email = tokenInfo.email;
 
-  // 3. Gerar o desenho assinado com o e-mail do token
   const svg = gerarDesenho(numero, email);
 
   return new Response(svg, {
@@ -87,14 +91,4 @@ export async function onRequestPost(context) {
       "Cache-Control": "no-store"
     }
   });
-}
-
-export async function onRequest(context) {
-  if (context.request.method !== "POST") {
-    return new Response("Method Not Allowed", {
-      status: 405,
-      headers: { Allow: "POST", "Cache-Control": "no-store" }
-    });
-  }
-  return onRequestPost(context);
 }
